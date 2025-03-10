@@ -1,0 +1,6 @@
+@kizwaonlineshop.Server_HostAddress = http://localhost:5165
+
+GET {{kizwaonlineshop.Server_HostAddress}}/api/login/loginuser
+Accept: application/json
+
+###
