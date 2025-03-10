@@ -22,13 +22,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\kizwaonlineshop.client\kizwaonlineshop.client.esproj">
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Migrations\" />
     <Folder Include="wwwroot\Images\" />
