@@ -18,16 +18,14 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
 # Copy only .csproj and restore dependencies
-COPY ["kizwaonlineshop.Server/kizwaonlineshop.Server.csproj", "kizwaonlineshop.Server/"]
+COPY ["kizwaonlineshop.Server.csproj", "./"]
 WORKDIR "/src/kizwaonlineshop.Server"
 RUN dotnet restore "kizwaonlineshop.Server.csproj"
 
 # Copy remaining files
 COPY . .
 WORKDIR "/src/kizwaonlineshop.Server"
-
-# Disable UseAppHost to prevent apphost copy error
-RUN dotnet build "kizwaonlineshop.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build /p:UseAppHost=false
+RUN dotnet build "kizwaonlineshop.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish
 FROM build AS publish
