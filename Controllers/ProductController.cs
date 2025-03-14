@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using kizwaonlineshop.Server.Data;
 using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using Microsoft.AspNetCore.Cors;
 //using kizwaonlineshop.Server.Services;
 
 namespace kizwaonlineshop.Server.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/product")]
     public class ProductController : ControllerBase
     {
         private readonly kizwacartContext _context;

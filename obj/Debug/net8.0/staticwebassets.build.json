@@ -1,23 +1,11 @@
 {
   "Version": 1,
-  "Hash": "BO7k5AkZQbhd8Zga9GlgQwHf0bSqzYWPa0l0mFQKyO0=",
+  "Hash": "TghYZ/wVMHy18BnSKhpggriS3HsixXVjSRAXPE3kqFU=",
   "Source": "kizwaonlineshop.Server",
   "BasePath": "_content/kizwaonlineshop.Server",
   "Mode": "Default",
   "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [
-    {
-      "Identity": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.client\\kizwaonlineshop.client.esproj",
-      "Version": 2,
-      "Source": "kizwaonlineshop.client",
-      "GetPublishAssetsTargets": "GetCurrentProjectPublishStaticWebAssetItems",
-      "AdditionalPublishProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalPublishPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained",
-      "GetBuildAssetsTargets": "GetCurrentProjectBuildStaticWebAssetItems",
-      "AdditionalBuildProperties": "Configuration=Debug;Platform=AnyCPU",
-      "AdditionalBuildPropertiesToRemove": "WebPublishProfileFile;TargetFramework;RuntimeIdentifier;SelfContained"
-    }
-  ],
+  "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
       "Name": "kizwaonlineshop.Server\\wwwroot",

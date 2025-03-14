@@ -6,11 +6,13 @@ using Microsoft.Data.SqlClient;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using kizwaonlineshop.Server.Services;
 using Npgsql;
+using Microsoft.AspNetCore.Cors;
 
 namespace kizwaonlineshop.Server.Controllers
 {
+
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/user")]
     public class UserController : ControllerBase
     {
         private readonly kizwacartContext _context;
@@ -24,38 +26,57 @@ namespace kizwaonlineshop.Server.Controllers
         }
 
         [HttpPost("loginuser")]
-        public IActionResult Login([FromBody] User model)
+        public async Task<IActionResult> Login([FromBody] User model)
         {
-            using (var connection = new NpgsqlConnection(_connectionString))
+            //using (var connection = new NpgsqlConnection(_connectionString))
+            //{
+            //    connection.Open();
+            //    var query = "SELECT \"Password\", \"UserType\" FROM \"user\" WHERE \"Username\" = @Username";
+            //    using (var command = new NpgsqlCommand(query, connection))
+            //    {
+            //        command.Parameters.AddWithValue("@Username", model.Username);
+            //        var reader = command.ExecuteReader();
+            //        if (reader.Read())
+            //        {
+            //            string password = reader.GetString(0);
+            //            string userType = reader.GetString(1);
+            //            if (password == null)
+            //            {
+            //                return Unauthorized(new { Message = "Invalid username or password" });
+            //            }
+            //            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, password);
+            //            var token = _authService.GenerateJwtToken(model.Username, userType);
+            //            if (isPasswordValid)
+            //            {
+            //                return Ok(new {
+            //                    Message = "Login successful",
+            //                    UserType = userType,
+            //                    Token = token
+            //                }); ;
+            //            }
+            //        }
+            //    }
+            //}
+            //return Unauthorized(new { Message = "Invalid username or password" });
+
+            if (model == null || string.IsNullOrEmpty(model.Username) || string.IsNullOrEmpty(model.Password))
             {
-                connection.Open();
-                var query = "SELECT \"Password\", \"UserType\" FROM \"user\" WHERE \"Username\" = @Username";
-                using (var command = new NpgsqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Username", model.Username);
-                    var reader = command.ExecuteReader();
-                    if (reader.Read())
-                    {
-                        string password = reader.GetString(0);
-                        string userType = reader.GetString(1);
-                        if (password == null)
-                        {
-                            return Unauthorized(new { Message = "Invalid username or password" });
-                        }
-                        bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, password);
-                        var token = _authService.GenerateJwtToken(model.Username, userType);
-                        if (isPasswordValid)
-                        {
-                            return Ok(new {
-                                Message = "Login successful",
-                                UserType = userType,
-                                Token = token
-                            }); ;
-                        }
-                    }
-                }
+                return BadRequest(new { Message = "Username and password are required" });
             }
-            return Unauthorized(new { Message = "Invalid username or password" });
+            var user = await _context.user
+                .Where(u => u.Username == model.Username)
+                .FirstOrDefaultAsync();
+            if (user == null)
+            {
+                return Unauthorized(new { Message = "Invalid username or password" });
+            }
+            bool isPasswordValid = BCrypt.Net.BCrypt.Verify(model.Password, user.Password);
+            if (!isPasswordValid)
+            {
+                return Unauthorized(new { Message = "Invalid username or password" });
+            }
+            var token = _authService.GenerateJwtToken(model.Username, user.UserType);            
+            return Ok(new { IsSuccess = true, Message = "Login successful", UserType = user.UserType, Token = token });
         }
 
         [HttpPost("signupuser")]
