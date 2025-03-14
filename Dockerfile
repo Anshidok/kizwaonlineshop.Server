@@ -17,24 +17,19 @@ FROM with-node AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-# Copy .csproj file from the correct path
-COPY ["kizwaonlineshop.Server/kizwaonlineshop.Server.csproj", "kizwaonlineshop.Server/"]
-WORKDIR "/src/kizwaonlineshop.Server"
-
-# Restore dependencies
+# Copy only .csproj and restore dependencies
+COPY ["kizwaonlineshop.Server.csproj", "./"]
 RUN dotnet restore "kizwaonlineshop.Server.csproj"
 
-# Copy the remaining source files
-COPY kizwaonlineshop.Server/ kizwaonlineshop.Server/
-WORKDIR "/src/kizwaonlineshop.Server"
-
-# Build the project
+# Copy the remaining files
+COPY . .
+WORKDIR "/src"
 RUN dotnet build "kizwaonlineshop.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Publish
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-WORKDIR "/src/kizwaonlineshop.Server"
+WORKDIR "/src"
 RUN dotnet publish "kizwaonlineshop.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Final stage
