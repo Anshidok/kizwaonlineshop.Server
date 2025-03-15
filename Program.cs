@@ -3,6 +3,11 @@ using kizwaonlineshop.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 var builder = WebApplication.CreateBuilder(args);
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://*:{port}");
+builder.Services.AddHealthChecks();
+
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,15 +42,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("https://localhost:4200", "https://kizwaonlineshop.up.railway.app")
+        policy.WithOrigins("https://localhost:4200", "https://kizwaonline.vercel.app")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
 
         //.WithOrigins("https://localhost:4200", "https://kizwaonlineshop.up.railway.app")
         //policy.AllowAnyOrigin()
     });
 });
 var app = builder.Build();
+app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
