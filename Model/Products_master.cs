@@ -17,10 +17,10 @@ namespace kizwaonlineshop.Server.Model
 
         public string? Size { get; set; } = string.Empty;
 
-        [Column(TypeName = "numeric(18,2)")] // Ensures correct precision for PostgreSQL
+        [Column(TypeName = "numeric(18,2)")]
         public decimal Price { get; set; }
 
-        [Column(TypeName = "numeric(18,2)")] // Same as above for consistency
+        [Column(TypeName = "numeric(18,2)")]
         public decimal Stocks { get; set; }
 
         public string? Image { get; set; }

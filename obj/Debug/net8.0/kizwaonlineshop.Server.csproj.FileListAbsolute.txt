@@ -174,3 +174,15 @@ E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\obj\Debug\net8.0\ki
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\obj\Debug\net8.0\ref\kizwaonlineshop.Server.dll
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Npgsql.dll
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Microsoft.IO.RecyclableMemoryStream.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\MimeMapping.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Newtonsoft.Json.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Core.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Functions.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Gotrue.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Postgrest.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Realtime.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Storage.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\System.Reactive.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Websocket.Client.dll

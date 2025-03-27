@@ -12,14 +12,15 @@ namespace kizwaonlineshop.Server.Model
 
         [Required]
         public string userId { get; set; } = string.Empty;
-
-        [Required]
         public int productId { get; set; }
+        public string productName { get; set; } = string.Empty;
+        public string category { get; set; } = string.Empty;
+        public string? size { get; set; } = string.Empty;
+        public string? image { get; set; }
 
         [Required]
         [Column(TypeName = "timestamp without time zone")] // PostgreSQL default for DateTime
         public DateTime addedDate { get; set; }
 
-        public string productName { get; set; } = string.Empty;
     }
 }

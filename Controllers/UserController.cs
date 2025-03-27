@@ -107,7 +107,6 @@ namespace kizwaonlineshop.Server.Controllers
                 return BadRequest(new UserResponse { IsSuccess = false, Message = "Username is already exist." });
             }
             return Ok(new UserResponse { IsSuccess = true, Message = "Username is available." });
-
         }
 
         [HttpGet]

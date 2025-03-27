@@ -1,10 +1,20 @@
 using kizwaonlineshop.Server.Data;
 using kizwaonlineshop.Server.Services;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
+using Supabase;
 var builder = WebApplication.CreateBuilder(args);
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://*:{port}");
+
+
+if (!builder.Environment.IsDevelopment())
+{
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+    builder.WebHost.UseUrls($"http://*:{port}");
+}
+
+
 builder.Services.AddHealthChecks();
 
 
@@ -46,12 +56,43 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();
-
-        //.WithOrigins("https://localhost:4200", "https://kizwaonlineshop.up.railway.app")
         //policy.AllowAnyOrigin()
     });
 });
 var app = builder.Build();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dbContext = scope.ServiceProvider.GetRequiredService<kizwacartContext>();
+//    dbContext.Database.Migrate();
+//}
+
+var supabaseUrl = builder.Configuration["Supabase:Url"];
+var supabaseKey = builder.Configuration["Supabase:AnonKey"];
+if (!string.IsNullOrEmpty(supabaseUrl) && !string.IsNullOrEmpty(supabaseKey))
+{
+    var options = new SupabaseOptions { AutoConnectRealtime = true };
+    var supabaseClient = new Supabase.Client(supabaseUrl, supabaseKey, options);
+    builder.Services.AddSingleton(supabaseClient);
+}
+if (app.Environment.IsDevelopment())
+{
+    app.UseStaticFiles();
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")),
+        RequestPath = "/Images"
+    });
+}
+else
+{
+    app.UseStaticFiles();
+}
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 app.UseHealthChecks("/health");
 app.UseHttpsRedirection();
 app.UseStaticFiles();

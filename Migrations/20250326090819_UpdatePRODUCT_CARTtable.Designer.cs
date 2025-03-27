@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using kizwaonlineshop.Server.Data;
@@ -11,9 +12,11 @@ using kizwaonlineshop.Server.Data;
 namespace kizwaonlineshop.Server.Migrations
 {
     [DbContext(typeof(kizwacartContext))]
-    partial class kizwacartContextModelSnapshot : ModelSnapshot
+    [Migration("20250326090819_UpdatePRODUCT_CARTtable")]
+    partial class UpdatePRODUCT_CARTtable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
