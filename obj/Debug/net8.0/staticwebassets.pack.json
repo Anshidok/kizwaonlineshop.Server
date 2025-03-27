@@ -1,14 +1,6 @@
 {
   "Files": [
     {
-      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\0b75e172-bd31-4f5c-968a-744160bee316.png",
-      "PackagePath": "staticwebassets\\Images\\0b75e172-bd31-4f5c-968a-744160bee316.png"
-    },
-    {
-      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\2e25baa4-5ebf-4dda-8bc4-70350e3cfebf.png",
-      "PackagePath": "staticwebassets\\Images\\2e25baa4-5ebf-4dda-8bc4-70350e3cfebf.png"
-    },
-    {
       "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\3d275f91-15f8-466f-a748-76152803d044.png",
       "PackagePath": "staticwebassets\\Images\\3d275f91-15f8-466f-a748-76152803d044.png"
     },
@@ -21,12 +13,8 @@
       "PackagePath": "staticwebassets\\Images\\8476039d-b3ff-42bc-b41e-79bbb79ec427.png"
     },
     {
-      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\952063e1-82fc-4d58-8465-27d7cc0c04c1.png",
-      "PackagePath": "staticwebassets\\Images\\952063e1-82fc-4d58-8465-27d7cc0c04c1.png"
-    },
-    {
-      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\d03253c0-1253-4cb2-8e01-9cbeaad090e9.png",
-      "PackagePath": "staticwebassets\\Images\\d03253c0-1253-4cb2-8e01-9cbeaad090e9.png"
+      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\b51044be-e950-4a0f-aeaf-a74b9e873444.png",
+      "PackagePath": "staticwebassets\\Images\\b51044be-e950-4a0f-aeaf-a74b9e873444.png"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.kizwaonlineshop.Server.props",

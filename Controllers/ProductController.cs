@@ -63,54 +63,45 @@ namespace kizwaonlineshop.Server.Controllers
             {
                 return BadRequest(ModelState);  // Return validation errors
             }
+            string imageUrl = "";
             if (product.ImageFile != null)
             {
-                //var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
-                //var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
-                //using (var stream = new FileStream(filePath, FileMode.Create))
-                //{
-                //    await product.ImageFile.CopyToAsync(stream);
-                //}
-                //product.Image = fileName;
-
-                if (product.ImageFile != null)
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                if (_env.IsDevelopment())
                 {
-                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
-                    string imageUrl = "";
-                    if (_env.IsDevelopment())
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        var wwwRootPath = _env.WebRootPath;
-                        var filePath = Path.Combine(wwwRootPath, "Images", fileName);
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            await product.ImageFile.CopyToAsync(stream);
-                        }
-                        imageUrl = $"/Images/{fileName}";
+                        await product.ImageFile.CopyToAsync(stream);
                     }
-                    else 
+                    imageUrl = fileName;
+                }
+                else
+                {
+                    var bucketName = _config["Supabase:Bucket"];
+                    var storage = _supabase.Storage.From(bucketName);
+                    using (var stream = product.ImageFile.OpenReadStream())
+                    using (var memoryStream = new MemoryStream())
                     {
-                        var bucketName = _config["Supabase:Bucket"];
-                        var storage = _supabase.Storage.From(bucketName);
-                        using (var stream = product.ImageFile.OpenReadStream())
-                        using (var memoryStream = new MemoryStream())
+                        await stream.CopyToAsync(memoryStream);
+                        byte[] fileBytes = memoryStream.ToArray();
+                        var response = await storage.Upload(fileBytes, fileName, new Supabase.Storage.FileOptions
                         {
-                            await stream.CopyToAsync(memoryStream);
-                            byte[] fileBytes = memoryStream.ToArray();
-                            var response = await storage.Upload(fileBytes, fileName, new Supabase.Storage.FileOptions
-                            {
-                                ContentType = product.ImageFile.ContentType
-                            });
-                            if (response == null)
-                            {
-                                return BadRequest(new { message = "Image upload failed" });
-                            }
+                            ContentType = product.ImageFile.ContentType
+                        });
+                        if (response == null)
+                        {
+                            return BadRequest(new { message = "Image upload failed" });
                         }
-                        imageUrl = _supabase.Storage.From(bucketName).GetPublicUrl(fileName);
                     }
-                    product.Image = imageUrl;
+                    imageUrl = _supabase.Storage.From(_config["Supabase:Bucket"]).GetPublicUrl(fileName);
                 }
             }
-
+            product.Image = imageUrl;
+            if (!string.IsNullOrEmpty(product.Image))
+            {
+                product.Image = product.Image.Replace("/Images/", "");
+            }
             _context.product.Add(product);
             var isSaved = await _context.SaveChangesAsync();
             if (isSaved > 0)
@@ -190,9 +181,24 @@ namespace kizwaonlineshop.Server.Controllers
             {
                 return NotFound(new { Message = "Product not found" });
             }
+            if (!string.IsNullOrEmpty(product.Image))
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", product.Image);
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
             _context.product.Remove(product);
-            await _context.SaveChangesAsync();
-            return Ok(new { Message = "Product deleted successfully" });
+            var isDeleted = await _context.SaveChangesAsync();
+            if (isDeleted > 0)
+            {
+                return Ok(new { message = "Product deleted successfully" });
+            }
+            else
+            {
+                return BadRequest(new { message = "Failed to delete product" });
+            }
         }
 
     }
