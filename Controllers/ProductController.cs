@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Supabase;
 using Supabase.Storage;
 using kizwaonlineshop.Server.Services;
+using CloudinaryDotNet.Actions;
 
 namespace kizwaonlineshop.Server.Controllers
 {
@@ -73,11 +74,13 @@ namespace kizwaonlineshop.Server.Controllers
                             await product.ImageFile.CopyToAsync(stream);
                         }
                         imageUrl = fileName;
-                        //imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
+                        //var folder = "Images/Products";
+                        //imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile, folder);
                     }
                     else
                     {
-                        imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
+                        var folder = "Images/Products";
+                        imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile, folder);
                         if (string.IsNullOrEmpty(imageUrl))
                         {
                             return BadRequest(new { message = "Image upload failed" });
@@ -95,7 +98,7 @@ namespace kizwaonlineshop.Server.Controllers
                 else
                 {
                     return BadRequest(new { message = "Product not saved successfully" });
-                }            
+                }
             }
             catch (Exception ex)
             {
@@ -108,7 +111,7 @@ namespace kizwaonlineshop.Server.Controllers
 
         [HttpPost("addToCart")]
         public async Task<IActionResult> addToCart([FromBody] Product_Cart cart)
-        {            
+        {
             //var cartprod = new Product_Cart
             //{
             //    userId = cart.userId,
@@ -178,10 +181,20 @@ namespace kizwaonlineshop.Server.Controllers
             }
             if (!string.IsNullOrEmpty(product.Image))
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", product.Image);
-                if (System.IO.File.Exists(filePath))
+                if (_env.IsDevelopment())
                 {
-                    System.IO.File.Delete(filePath);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", product.Image);
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                    //var folder = "";
+                    //await _cloudinaryService.DeleteImageAsync(product.Image, folder);
+                }
+                else
+                {
+                    var folder = "";
+                    await _cloudinaryService.DeleteImageAsync(product.Image, folder);
                 }
             }
             _context.product.Remove(product);
