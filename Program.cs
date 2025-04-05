@@ -48,6 +48,8 @@ builder.Services.AddDbContext<kizwacartContext>(options =>
 
 
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddScoped<CloudinaryService>(); // Register Cloudinary service
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>

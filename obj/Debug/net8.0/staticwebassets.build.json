@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "FNu/61MfMI+pLzfKBnf4Xeth4dc3aSgN6JyAusLLN58=",
+  "Hash": "W7KntsD8Atc8q1M2bMLObTabYSQZq84ymHB00QiOy8g=",
   "Source": "kizwaonlineshop.Server",
   "BasePath": "_content/kizwaonlineshop.Server",
   "Mode": "Default",
@@ -72,25 +72,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Images\\8476039d-b3ff-42bc-b41e-79bbb79ec427.png"
-    },
-    {
-      "Identity": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\b51044be-e950-4a0f-aeaf-a74b9e873444.png",
-      "SourceId": "kizwaonlineshop.Server",
-      "SourceType": "Discovered",
-      "ContentRoot": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\",
-      "BasePath": "_content/kizwaonlineshop.Server",
-      "RelativePath": "Images/b51044be-e950-4a0f-aeaf-a74b9e873444.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\Images\\b51044be-e950-4a0f-aeaf-a74b9e873444.png"
     }
   ]
 }

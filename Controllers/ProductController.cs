@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
 using Supabase;
 using Supabase.Storage;
+using kizwaonlineshop.Server.Services;
 
 namespace kizwaonlineshop.Server.Controllers
 {
@@ -22,20 +23,13 @@ namespace kizwaonlineshop.Server.Controllers
     public class ProductController : ControllerBase
     {
         private readonly kizwacartContext _context;
-        private readonly IConfiguration _config;
         private readonly IWebHostEnvironment _env;
-        private readonly Supabase.Client _supabase;
-        public ProductController(kizwacartContext context, IConfiguration config, IWebHostEnvironment env)
+        private readonly CloudinaryService _cloudinaryService;
+        public ProductController(kizwacartContext context, IWebHostEnvironment env, CloudinaryService cloudinaryService)
         {
             _context = context;
-            _config = config;
             _env = env;
-
-            // Initialize Supabase client
-            _supabase = new Supabase.Client(
-                _config["Supabase:Url"],
-                _config["Supabase:ApiKey"]
-            );
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet("getall")]
@@ -45,12 +39,14 @@ namespace kizwaonlineshop.Server.Controllers
             return Ok(products);
         }
 
+
         [HttpGet("getTrendProd")]
         public async Task<IActionResult> getTrendProd()
         {
             var products = await _context.product.ToListAsync();
             return Ok(products);
         }
+
 
         [HttpPost("addproduct")]
         public async Task<IActionResult> addproduct([FromForm] Products_master product)
@@ -64,55 +60,50 @@ namespace kizwaonlineshop.Server.Controllers
                 return BadRequest(ModelState);  // Return validation errors
             }
             string imageUrl = "";
-            if (product.ImageFile != null)
+            try
             {
-                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
-                if (_env.IsDevelopment())
+                if (product.ImageFile != null)
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(product.ImageFile.FileName);
+                    if (_env.IsDevelopment())
                     {
-                        await product.ImageFile.CopyToAsync(stream);
-                    }
-                    imageUrl = fileName;
-                }
-                else
-                {
-                    var bucketName = _config["Supabase:Bucket"];
-                    var storage = _supabase.Storage.From(bucketName);
-                    using (var stream = product.ImageFile.OpenReadStream())
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await stream.CopyToAsync(memoryStream);
-                        byte[] fileBytes = memoryStream.ToArray();
-                        var response = await storage.Upload(fileBytes, fileName, new Supabase.Storage.FileOptions
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
                         {
-                            ContentType = product.ImageFile.ContentType
-                        });
-                        if (response == null)
+                            await product.ImageFile.CopyToAsync(stream);
+                        }
+                        imageUrl = fileName;
+                    }
+                    else
+                    {
+                        imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
+                        if (string.IsNullOrEmpty(imageUrl))
                         {
                             return BadRequest(new { message = "Image upload failed" });
                         }
                     }
-                    imageUrl = _supabase.Storage.From(_config["Supabase:Bucket"]).GetPublicUrl(fileName);
                 }
+                product.Image = imageUrl;
+                _context.product.Add(product);
+                var isSaved = await _context.SaveChangesAsync();
+
+                if (isSaved > 0)
+                {
+                    return Ok(new { message = "Product saved successfully", product });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Product not saved successfully" });
+                }            
             }
-            product.Image = imageUrl;
-            if (!string.IsNullOrEmpty(product.Image))
+            catch (Exception ex)
             {
-                product.Image = product.Image.Replace("/Images/", "");
-            }
-            _context.product.Add(product);
-            var isSaved = await _context.SaveChangesAsync();
-            if (isSaved > 0)
-            {
-                return Ok(new { message = "Product saved successfully" });
-            }
-            else
-            {
-                return BadRequest(new { message = "Product not saved successfully" });
+                Console.WriteLine(" Error saving product: " + ex.Message);
+                Console.WriteLine(" StackTrace: " + ex.StackTrace);
+                return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
             }
         }
+
 
         [HttpPost("addToCart")]
         public async Task<IActionResult> addToCart([FromBody] Product_Cart cart)
@@ -139,6 +130,7 @@ namespace kizwaonlineshop.Server.Controllers
             }
         }
 
+
         [HttpGet("getCart/{userId}")]
         public async Task<IActionResult> getcart(string userId)
         {
@@ -147,6 +139,7 @@ namespace kizwaonlineshop.Server.Controllers
                .CountAsync();
             return Ok(count);
         }
+
 
         [HttpGet("productDet/{Id}")]
         public async Task<IActionResult> productDet(int Id)
@@ -172,6 +165,7 @@ namespace kizwaonlineshop.Server.Controllers
 
             return Ok(products);
         }
+
 
         [HttpDelete("deleteproduct/{Id}")]
         public async Task<IActionResult> deleteproduct(int Id)

@@ -186,3 +186,4 @@ E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Su
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Supabase.Storage.dll
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\System.Reactive.dll
 E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\Websocket.Client.dll
+E:\My Projects\E-Commerse-Application\kizwaonlineshop.Server\bin\Debug\net8.0\CloudinaryDotNet.dll

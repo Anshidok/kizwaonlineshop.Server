@@ -75,7 +75,7 @@ namespace kizwaonlineshop.Server.Controllers
             {
                 return Unauthorized(new { Message = "Invalid username or password" });
             }
-            var token = _authService.GenerateJwtToken(model.Username, user.UserType);            
+            var token = _authService.GenerateJwtToken(model.Username, user.UserType);
             return Ok(new { IsSuccess = true, Message = "Login successful", UserType = user.UserType, Token = token });
         }
 
@@ -129,6 +129,19 @@ namespace kizwaonlineshop.Server.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Message = "User deleted successfully" });
+        }
+
+        [HttpGet("getUserDet/{userId}")]
+        public async Task<IActionResult> getUserDet(string userId)
+        {
+            var userDet = await _context.user.
+                Where(u => u.Username == userId).
+                FirstOrDefaultAsync();
+            if(userDet == null)
+            {
+                return NotFound(new { Messge = "User details not fetch" });
+            }
+            return Ok(userDet);
         }
 
     }
