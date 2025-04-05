@@ -73,6 +73,7 @@ namespace kizwaonlineshop.Server.Controllers
                             await product.ImageFile.CopyToAsync(stream);
                         }
                         imageUrl = fileName;
+                        //imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
                     }
                     else
                     {

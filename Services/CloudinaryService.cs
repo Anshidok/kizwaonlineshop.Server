@@ -33,6 +33,11 @@ namespace kizwaonlineshop.Server.Services
             };
 
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult.Error != null)
+            {
+                throw new Exception($"Cloudinary upload error: {uploadResult.Error.Message}");
+            }
             return uploadResult.SecureUrl.ToString(); // Return the image URL
         }
     }
