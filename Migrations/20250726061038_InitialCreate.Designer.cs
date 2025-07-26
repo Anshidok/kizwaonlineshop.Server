@@ -12,7 +12,7 @@ using kizwaonlineshop.Server.Data;
 namespace kizwaonlineshop.Server.Migrations
 {
     [DbContext(typeof(kizwacartContext))]
-    [Migration("20250723084628_InitialCreate")]
+    [Migration("20250726061038_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

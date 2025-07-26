@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("kizwaonlineshop.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+13052ff338edb7c06fb6a9401bc87750b908ac4e")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b6fd8ba76681ac13d871eb5d56fcbb36b2ef1d4b")]
 [assembly: System.Reflection.AssemblyProductAttribute("kizwaonlineshop.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("kizwaonlineshop.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
