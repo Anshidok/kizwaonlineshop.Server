@@ -22,29 +22,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddDbContext<kizwacartContext>(options =>
-//    options.UseSqlServer(builder.Configuration.GetConnectionString("kizwacartdb")));
-//var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-
-//var configuration = new ConfigurationBuilder()
-//    .SetBasePath(Directory.GetCurrentDirectory())
-//    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-//    .AddJsonFile($"appsettings.{environment}.json", optional: true)
-//    .AddEnvironmentVariables() 
-//    .Build();
-//var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection")
-//                        ?? builder.Configuration.GetConnectionString("DefaultConnection");
-
-
 var isDevelopment = builder.Environment.IsDevelopment();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-var localConnection = builder.Configuration.GetConnectionString("DefaultConnection");
-var railwayConnection = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")?.Trim();
-var finalConnection = !string.IsNullOrEmpty(railwayConnection) ? railwayConnection : localConnection;
+//var localConnection = builder.Configuration.GetConnectionString("DefaultConnection");
+//var railwayConnection = Environment.GetEnvironmentVariable("POSTGRES_CONNECTION_STRING")?.Trim();
+//var finalConnection = !string.IsNullOrEmpty(railwayConnection) ? railwayConnection : localConnection;
 
 builder.Services.AddDbContext<kizwacartContext>(options =>
-    options.UseNpgsql(finalConnection));
+    options.UseNpgsql(connectionString));
 
 
 builder.Services.AddSingleton<AuthService>();

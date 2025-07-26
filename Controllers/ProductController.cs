@@ -74,13 +74,11 @@ namespace kizwaonlineshop.Server.Controllers
                             await product.ImageFile.CopyToAsync(stream);
                         }
                         imageUrl = fileName;
-                        //var folder = "Images/Products";
-                        //imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile, folder);
+                        //imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
                     }
                     else
                     {
-                        var folder = "Images/Products";
-                        imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile, folder);
+                        imageUrl = await _cloudinaryService.UploadImageAsync(product.ImageFile);
                         if (string.IsNullOrEmpty(imageUrl))
                         {
                             return BadRequest(new { message = "Image upload failed" });
@@ -105,32 +103,6 @@ namespace kizwaonlineshop.Server.Controllers
                 Console.WriteLine(" Error saving product: " + ex.Message);
                 Console.WriteLine(" StackTrace: " + ex.StackTrace);
                 return StatusCode(500, new { message = "Internal Server Error", error = ex.Message });
-            }
-        }
-
-
-        [HttpPost("addToCart")]
-        public async Task<IActionResult> addToCart([FromBody] Product_Cart cart)
-        {
-            //var cartprod = new Product_Cart
-            //{
-            //    userId = cart.userId,
-            //    productId = cart.productId,
-            //    productName = cart.productName,
-            //    category = cart.category,
-            //    size = cart.size,
-            //    image = cart.image,
-            //    addedDate = cart.addedDate
-            //};
-            _context.prodcart.Add(cart);
-            var isSaved = await _context.SaveChangesAsync();
-            if (isSaved > 0)
-            {
-                return Ok(new { message = "Product saved successfully" });
-            }
-            else
-            {
-                return BadRequest(new { message = "Product not saved successfully" });
             }
         }
 
@@ -188,13 +160,11 @@ namespace kizwaonlineshop.Server.Controllers
                     {
                         System.IO.File.Delete(filePath);
                     }
-                    //var folder = "";
-                    //await _cloudinaryService.DeleteImageAsync(product.Image, folder);
+                    //await _cloudinaryService.DeleteImageAsync(product.Image);
                 }
                 else
                 {
-                    var folder = "";
-                    await _cloudinaryService.DeleteImageAsync(product.Image, folder);
+                    await _cloudinaryService.DeleteImageAsync(product.Image);
                 }
             }
             _context.product.Remove(product);
@@ -209,5 +179,17 @@ namespace kizwaonlineshop.Server.Controllers
             }
         }
 
+        [HttpDelete("removeCartItem/{id}")]
+        public async Task<IActionResult> removeCartItem(int id)
+        {
+            var product = await _context.prodcart.FirstOrDefaultAsync(p => p.productId == id);
+            if (product == null)
+            {
+                return NotFound(new { Message = "Product not found" });
+            }
+            _context.prodcart.Remove(product);
+            await _context.SaveChangesAsync();
+            return Ok(new { Message = "Product Removed" });
+        }
     }
 }

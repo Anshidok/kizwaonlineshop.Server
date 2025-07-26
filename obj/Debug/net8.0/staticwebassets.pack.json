@@ -1,6 +1,18 @@
 {
   "Files": [
     {
+      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\18060930-fe6e-4bc6-a645-a8d50ca4a876.png",
+      "PackagePath": "staticwebassets\\Images\\18060930-fe6e-4bc6-a645-a8d50ca4a876.png"
+    },
+    {
+      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\2090833a-7021-4c25-aa15-154d2ed38607.png",
+      "PackagePath": "staticwebassets\\Images\\2090833a-7021-4c25-aa15-154d2ed38607.png"
+    },
+    {
+      "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\3c6c9422-92f4-4d54-91a5-1a9babcf8560.png",
+      "PackagePath": "staticwebassets\\Images\\3c6c9422-92f4-4d54-91a5-1a9babcf8560.png"
+    },
+    {
       "Id": "E:\\My Projects\\E-Commerse-Application\\kizwaonlineshop.Server\\wwwroot\\Images\\3d275f91-15f8-466f-a748-76152803d044.png",
       "PackagePath": "staticwebassets\\Images\\3d275f91-15f8-466f-a748-76152803d044.png"
     },

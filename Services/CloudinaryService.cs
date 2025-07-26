@@ -20,16 +20,13 @@ namespace kizwaonlineshop.Server.Services
             _cloudinary = new Cloudinary(account);
         }
 
-        public async Task<string> UploadImageAsync(IFormFile file, string folder)
+        public async Task<string> UploadImageAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
                 return null;
 
-            // Clean and format the folder path
-            folder = folder?.Trim().Trim('/');
-
             var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
-            var publicId = $"{folder}/{fileNameWithoutExtension}"; // e.g. "Images/Products/profile"
+            var publicId = $"{fileNameWithoutExtension}";
 
             using var stream = file.OpenReadStream();
             var uploadParams = new ImageUploadParams()
@@ -42,28 +39,23 @@ namespace kizwaonlineshop.Server.Services
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
             if (uploadResult.Error != null)
-            {
                 throw new Exception($"Cloudinary upload error: {uploadResult.Error.Message}");
-            }
 
-            return uploadResult.SecureUrl.ToString(); // Return the image URL
+            return uploadResult.SecureUrl.ToString();
         }
 
 
-        public async Task<bool> DeleteImageAsync(string imageUrl, string folder)
+        public async Task<bool> DeleteImageAsync(string imageUrl)
         {
             if (string.IsNullOrEmpty(imageUrl))
                 return false;
-
             try
             {
-                folder = folder.Trim().Trim('/');
-
                 var uri = new Uri(imageUrl);
                 var fileName = uri.Segments.Last(); // e.g. "profile.png"
                 var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
 
-                var fullPublicId = $"{folder}/{fileNameWithoutExtension}"; // e.g. "Images/Products/profile"
+                var fullPublicId = $"{fileNameWithoutExtension}"; // e.g. "Images/Products/profile"
 
                 var deletionParams = new DeletionParams(fullPublicId);
                 var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
